@@ -127,6 +127,7 @@ else
 	sleep 5
 
 	# write old kernel version to file for verification
+ 	mkdir -p "${WORKDIR}"
 	uname -a > ${WORKDIR}/old-kernel.txt
 
 	download_tarballs
