@@ -63,7 +63,7 @@ extract_tarballs() {
 
 	# extract base
 	echo "=== extracting / on ${WORKDIR}/${BOOTENV} ==="
-	tar -C ${MOUNT} --exclude=etc --clear-nochange-fflags -xvpf "${WORKDIR}/${BOOTENV}/base.txz" || /usr/bin/true
+	tar -C ${MOUNT} --exclude=etc --clear-nochange-fflags -xpf "${WORKDIR}/${BOOTENV}/base.txz" || /usr/bin/true
 
 	# extract src
 	echo "=== extracting /usr/src on ${WORKDIR}/${BOOTENV} ==="
@@ -73,10 +73,10 @@ extract_tarballs() {
 
 update_packages() {
 	echo "=== updating packages on ${BOOTENV} ==="
-	mount -t devfs devfs "{MOUNT}/dev"
+	mount -t devfs devfs "${MOUNT}/dev"
 	chroot "${MOUNT}" pkg update
 	chroot "${MOUNT}" pkg upgrade
-	umount "{MOUNT}/dev"
+	umount "${MOUNT}/dev"
 }
 
 umount_bootenv() {
