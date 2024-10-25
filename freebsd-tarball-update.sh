@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 ARCH="$(uname -m)"
 VERSION="$(uname -r)"
 URL="https://download.freebsd.org/snapshots/${ARCH}/${VERSION}"
@@ -61,7 +63,7 @@ extract_tarballs() {
 
 	# extract base
 	echo "=== extracting / on ${WORKDIR}/${BOOTENV} ==="
-	tar -C ${MOUNT} --exclude=etc --clear-nochange-fflags -xvpf "${WORKDIR}/${BOOTENV}/base.txz"
+	tar -C ${MOUNT} --exclude=etc --clear-nochange-fflags -xvpf "${WORKDIR}/${BOOTENV}/base.txz" || /usr/bin/true
 
 	# extract src
 	echo "=== extracting /usr/src on ${WORKDIR}/${BOOTENV} ==="
