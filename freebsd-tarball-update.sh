@@ -130,7 +130,11 @@ else
  	mkdir -p "${WORKDIR}"
 	uname -a > ${WORKDIR}/old-kernel.txt
 
-	download_tarballs
+	if [ -z "${DOWNLOAD}" ]; then
+		download_tarballs
+	else
+		echo "=== not downloading tarballs ==="
+	fi
 	create_bootenv
 	mount_bootenv
 	extract_tarballs
