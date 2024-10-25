@@ -124,6 +124,9 @@ if [ -f ${WORKDIR}/.first ]; then
 else
 
 	echo "=== Updating ${ARCH}/${VERSION} on ${TODAY} in 5 seconds.  Press Ctrl-C to stop ==="
+	if [ ! -z "${DOWNLOAD}" ]; then
+		echo "    not downloading tarballs first"
+	fi
 	sleep 5
 
 	# write old kernel version to file for verification
