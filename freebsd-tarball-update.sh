@@ -8,6 +8,7 @@ URL="https://download.freebsd.org/snapshots/${ARCH}/${VERSION}"
 TODAY=$(date "+%Y-%m-%d")
 BOOTENV="${VERSION}-${TODAY}"
 WORKDIR="/var/db/freebsd-tarball-update"
+PHASE_FILE="/root/.first"
 
 bectl_check() {
 	# check for zfs boot environments
@@ -45,12 +46,12 @@ mount_bootenv() {
 	echo "=== mounting ${BOOTENV} to temp directory ==="
 	MOUNT=$(bectl mount "${BOOTENV}")
 
-	if [ -z "${MOUNT}"]; then
+	if [ -z "${MOUNT}" ]; then
 		echo "unable to mount boot environment ${BOOTENV}"
 		exit 1
 	fi
 
-	if [ ! -d "${MOUNT}"]; then
+	if [ ! -d "${MOUNT}" ]; then
 		echo "${MOUNT} is not a valid directory"
 		exit 1
 	fi
@@ -58,15 +59,15 @@ mount_bootenv() {
 
 extract_tarballs() {
 	# extract kernel
-	echo "=== extracting /boot/kernel on ${BOOTENV} ==="
+	echo "=== extracting /boot/kernel to ${BOOTENV} ==="
 	tar -C ${MOUNT} -xpf "${WORKDIR}/${BOOTENV}/kernel.txz"
 
 	# extract base
-	echo "=== extracting / on ${WORKDIR}/${BOOTENV} ==="
+	echo "=== extracting / to ${BOOTENV} ==="
 	tar -C ${MOUNT} --exclude=etc --clear-nochange-fflags -xpf "${WORKDIR}/${BOOTENV}/base.txz" || /usr/bin/true
 
 	# extract src
-	echo "=== extracting /usr/src on ${WORKDIR}/${BOOTENV} ==="
+	echo "=== extracting /usr/src to ${BOOTENV} ==="
 	rm -Rf "${MOUNT}/usr/src/*"
 	tar -C ${MOUNT} -xpf "${WORKDIR}/${BOOTENV}/src.txz"
 }
@@ -115,12 +116,12 @@ delete_old_files() {
 root_check
 bectl_check
 
-if [ -f ${WORKDIR}/.first ]; then
+if [ -f "${PHASE_FILE}" ]; then
 
-	fully_activate_bootenv
 	run_etcupdate
 	delete_old_files
-	rm ${WORKDIR}/.first
+	rm "${PHASE_FILE}"
+	fully_activate_bootenv
 	echo "=== update complete! ==="
 
 else
@@ -150,5 +151,5 @@ else
 
 	echo "=== ${BOOTENV} created and activated ==="
 	echo "=== Reboot then run this script again to finish updates ==="
-	touch ${WORKDIR}/.first
+	touch "${PHASE_FILE}"
 fi
