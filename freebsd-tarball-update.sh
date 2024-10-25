@@ -57,7 +57,7 @@ mount_bootenv() {
 extract_tarballs() {
 	# extract kernel
 	echo "=== extracting /boot/kernel on ${BOOTENV} ==="
-	tar -C ${MOUNT} -xvpf "${WORKDIR}/${BOOTENV}/kernel.txz"
+	tar -C ${MOUNT} -xpf "${WORKDIR}/${BOOTENV}/kernel.txz"
 
 	# extract base
 	echo "=== extracting / on ${WORKDIR}/${BOOTENV} ==="
@@ -66,13 +66,15 @@ extract_tarballs() {
 	# extract src
 	echo "=== extracting /usr/src on ${WORKDIR}/${BOOTENV} ==="
 	rm -Rf "${MOUNT}/usr/src/*"
-	tar -C ${MOUNT} -xzvpf "${WORKDIR}/${BOOTENV}/src.txz"
+	tar -C ${MOUNT} -xpf "${WORKDIR}/${BOOTENV}/src.txz"
 }
 
 update_packages() {
 	echo "=== updating packages on ${BOOTENV} ==="
+	mount -t devfs devfs "{MOUNT}/dev"
 	chroot "${MOUNT}" pkg update
 	chroot "${MOUNT}" pkg upgrade
+	umount "{MOUNT}/dev"
 }
 
 umount_bootenv() {
