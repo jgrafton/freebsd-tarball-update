@@ -5,7 +5,7 @@ ARCH="$(uname -m)"
 VERSION="$(uname -r)"
 URL="https://download.freebsd.org/snapshots/${ARCH}/${VERSION}"
 TODAY=$(date "+%Y-%m-%d")
-WORKDIR="/var/db/tarball_update"
+WORKDIR="/var/db/freebsd-tarball-update"
 
 bectl_check() {
 	# check for zfs boot environments
