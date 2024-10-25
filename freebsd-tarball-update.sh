@@ -4,6 +4,7 @@ ARCH="$(uname -m)"
 VERSION="$(uname -r)"
 URL="https://download.freebsd.org/snapshots/${ARCH}/${VERSION}"
 TODAY=$(date "+%Y-%m-%d")
+BOOTENV="${VERSION}-${TODAY}"
 WORKDIR="/var/db/freebsd-tarball-update"
 
 bectl_check() {
@@ -24,11 +25,8 @@ root_check() {
 }
 
 download_tarballs() {
-	# create boot environment name
-	BOOTENV="${VERSION}-${TODAY}"
 	mkdir -p "${WORKDIR}/${BOOTENV}"
 
-	# get latest files
 	fetch -o "${WORKDIR}/${BOOTENV}/kernel.txz" "${URL}/kernel.txz"
 	fetch -o "${WORKDIR}/${BOOTENV}/base.txz" "${URL}/base.txz"
 	fetch -o "${WORKDIR}/${BOOTENV}/src.txz" "${URL}/src.txz"
