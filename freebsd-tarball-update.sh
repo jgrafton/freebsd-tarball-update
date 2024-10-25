@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 ARCH="$(uname -m)"
 VERSION="$(uname -r)"
 URL="https://download.freebsd.org/snapshots/${ARCH}/${VERSION}"
