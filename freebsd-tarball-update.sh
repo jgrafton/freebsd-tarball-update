@@ -65,18 +65,13 @@ extract_tarballs() {
 	# extract base
 	echo "=== extracting / to ${BOOTENV} ==="
 	tar -C ${MOUNT} --exclude=etc --clear-nochange-fflags -xpf "${WORKDIR}/${BOOTENV}/base.txz" || /usr/bin/true
-
-	# extract src
-	echo "=== extracting /usr/src to ${BOOTENV} ==="
-	rm -Rf "${MOUNT}/usr/src/*"
-	tar -C ${MOUNT} -xpf "${WORKDIR}/${BOOTENV}/src.txz"
 }
 
 update_packages() {
 	echo "=== updating packages on ${BOOTENV} ==="
 	mount -t devfs devfs "${MOUNT}/dev"
-	chroot "${MOUNT}" pkg update
-	chroot "${MOUNT}" pkg upgrade
+	pkg --chroot "${MOUNT}" update
+	pkg --chroot "${MOUNT}" upgrade -y
 	umount "${MOUNT}/dev"
 }
 
@@ -113,11 +108,19 @@ delete_old_files() {
 	yes | make delete-old-libs
 }
 
+extract_src() {
+	# extract src
+	echo "=== extracting /usr/src to ${BOOTENV} ==="
+	rm -Rf "${MOUNT}/usr/src/*"
+	tar -C ${MOUNT} -xpf "${WORKDIR}/${BOOTENV}/src.txz"
+}
+
 root_check
 bectl_check
 
 if [ -f "${PHASE_FILE}" ]; then
 
+	extract_src
 	run_etcupdate
 	delete_old_files
 	rm "${PHASE_FILE}"
