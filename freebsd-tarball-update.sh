@@ -3,7 +3,9 @@
 set -e
 
 ARCH="$(uname -m)"
-VERSION="$(uname -r)"
+if [ -z "${VERSION}" ]; then
+	VERSION="$(uname -r)"
+fi
 URL="https://download.freebsd.org/snapshots/${ARCH}/${VERSION}"
 TODAY=$(date "+%Y-%m-%d")
 BOOTENV="${VERSION}-${TODAY}"
