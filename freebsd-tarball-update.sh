@@ -14,6 +14,10 @@ PHASE_FILE="/tmp/.first"
 
 bectl_check() {
 	# check for zfs boot environments
+	if [ ! -x /sbin/bectl ]; then
+		echo "/sbin/bectl missing, is this a FreeBSD 12.x or greater system?"
+		exit 1
+	fi
 	bectl check
 	if [ $? -ne 0 ]; then
 		echo "this computer does not support ZFS boot environments"
