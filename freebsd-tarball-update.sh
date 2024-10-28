@@ -114,9 +114,9 @@ delete_old_files() {
 
 extract_src() {
 	# extract src
-	echo "=== extracting /usr/src to ${BOOTENV} ==="
-	rm -Rf "${MOUNT}/usr/src/*"
-	tar -C ${MOUNT} -xpf "${WORKDIR}/${BOOTENV}/src.txz"
+	echo "=== extracting /usr/src ==="
+	rm -Rf "/usr/src/*"
+	tar -C / -xpf "${WORKDIR}/${BOOTENV}/src.txz"
 }
 
 root_check
