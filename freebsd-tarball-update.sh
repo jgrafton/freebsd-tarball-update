@@ -62,6 +62,8 @@ mount_bootenv() {
 extract_tarballs() {
 	# extract kernel
 	echo "=== extracting /boot/kernel to ${BOOTENV} ==="
+    rm -Rf "${MOUNT}/boot/kernel.old"
+    mv "${MOUNT}/boot/kernel" "${MOUNT}/boot/kernel.old"
 	tar -C ${MOUNT} -xpf "${WORKDIR}/${BOOTENV}/kernel.txz"
 
 	# extract base
