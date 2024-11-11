@@ -10,7 +10,7 @@ URL="https://download.freebsd.org/snapshots/${ARCH}/${VERSION}"
 TODAY=$(date "+%Y-%m-%d")
 BOOTENV="${VERSION}-${TODAY}"
 WORKDIR="/var/db/freebsd-tarball-update"
-PHASE_FILE="/tmp/.first"
+PHASE_FILE="/var/tmp/.freebsd-tarball-phase1"
 
 bectl_check() {
 	# check for zfs boot environments
