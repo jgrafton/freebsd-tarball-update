@@ -4,13 +4,20 @@ set -e
 
 ARCH="$(uname -m)"
 if [ -z "${VERSION}" ]; then
-	VERSION="$(uname -r)"
+	VERSION=`uname -r | sed -E 's,-p[0-9]+,,'`
 fi
-URL="https://download.freebsd.org/snapshots/${ARCH}/${VERSION}"
+
+if uname -r | grep -Eq 'RELEASE'; then
+    URL="http://pkg.jrgsystems.com/releases/${ARCH}/${VERSION}"
+else
+    URL="https://download.freebsd.org/snapshots/${ARCH}/${VERSION}"
+fi
+
 TODAY=$(date "+%Y-%m-%d")
 BOOTENV="${VERSION}-${TODAY}"
 WORKDIR="/var/db/freebsd-tarball-update"
 PHASE_FILE="/var/tmp/.freebsd-tarball-phase1"
+
 
 bectl_check() {
 	# check for zfs boot environments
