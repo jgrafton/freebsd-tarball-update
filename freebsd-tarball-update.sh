@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+#set -x
 
 ARCH="$(uname -m)"
 if [ -z "${VERSION}" ]; then
@@ -16,6 +17,7 @@ fi
 TODAY=$(date "+%Y-%m-%d")
 BOOTENV="${VERSION}-${TODAY}"
 WORKDIR="/var/db/freebsd-tarball-update"
+SRCDIR="${WORKDIR}/${BOOTENV}/"
 PHASE_FILE="/var/tmp/.freebsd-tarball-phase1"
 
 
@@ -112,7 +114,7 @@ fully_activate_bootenv() {
 run_etcupdate() {
 	# update etc files
 	echo "=== running etcupdate, can take awhile ==="
-	etcupdate
+	etcupdate -s "${SRCDIR}/usr/src"
 }
 
 delete_old_files() {
@@ -126,8 +128,7 @@ delete_old_files() {
 extract_src() {
 	# extract src
 	echo "=== extracting /usr/src ==="
-	rm -Rf "/usr/src/*"
-	tar -C / -xpf "${WORKDIR}/${BOOTENV}/src.txz"
+	tar -C "${SRCDIR}" -xpf "${WORKDIR}/${BOOTENV}/src.txz"
 }
 
 root_check
