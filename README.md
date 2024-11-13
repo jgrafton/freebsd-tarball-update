@@ -4,14 +4,14 @@ This is a simple script that updates FreeBSD systems using ZFS boot environments
 
 It works by creating a boot environment from the current system, upgrading the boot environment and then activating it.
 
-The basic update process is thus:
+The basic update process is:
 
 1. Determine kernel version and update
-1. Download tarballs for the latest snapshot
+1. Download tarballs for the latest version
 1. Create a new boot environment
 1. Mount the new boot environment
-1. Extract downloaded tarballs (kernel, base, and src) into the new boot environment
-1. Upgrade the packages in the chrooted boot environment
+1. Extract downloaded tarballs (kernel and base) into the new boot environment
+1. Upgrade the packages in the new boot environment
 1. Temporarily activate the new boot environment with the -T flag
 1. Tell user to reboot the host and rerun script
 1. After reboot, fully activate the new boot environment
@@ -25,4 +25,3 @@ The script must be run as a super user and will give you 5 seconds to press cont
 ```
 
 By default, the script uses `/var/db/freebsd-tarball-update` as a work directory.
-
