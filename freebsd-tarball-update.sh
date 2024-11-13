@@ -120,9 +120,11 @@ run_etcupdate() {
 delete_old_files() {
 	# delete old libraries
 	echo "=== deleting old files and libraries ==="
-	cd /usr/src
+	cd "${SRCDIR}/usr/src"
 	yes | make delete-old
 	yes | make delete-old-libs
+	cd "${WORKDIR}"
+	rm -Rf "${WORKDIR}/${BOOTENV}"
 }
 
 extract_src() {
